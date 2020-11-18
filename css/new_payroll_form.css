@@ -92,7 +92,7 @@ label {
 .text {
     font-size: 16px;
     color: #42515f;
-    opacity: 71;
+    opacity: 1;
     font-family: Roboto;
 }
 
@@ -101,4 +101,21 @@ label {
     padding: 12px;
     border: 1px solid #ccc;
     resize: vertical;
+}
+
+.profile-radio-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-radio-content > label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile {
+    width: 40px;
+    border-radius: 50%;
+    margin-left: 12px;
 }
