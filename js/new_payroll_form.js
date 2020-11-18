@@ -40,7 +40,18 @@ class Employee {
     }
 
     set_start_date(start_date) {
-        this.start_date = start_date;
+        let date = new Date(start_date);
+        let date_of_joining = new Date();
+        date_of_joining.setDate(date_of_joining.getDate() - 30);
+        if (date > Date.now()) {
+            throw 'You are trying to enter a future date !'
+        }
+        else if (date - date_of_joining < 0) {
+            throw 'Not within 30 days of date of joining'
+        }
+        else {
+            this.start_date = start_date;
+        }
     }
 
     set_notes(notes) {
@@ -48,7 +59,7 @@ class Employee {
     }
 
     set_name(name) {
-        let regex = RegExp('^[A-Z]{1}[a-z]{2,}');
+        let regex = RegExp('^[A-Z]{1}[a-z]{2,}$');
         if (regex.test(name)) {
             this.name = name;
         }
@@ -83,18 +94,31 @@ const employee_data = document.querySelector('.form-content'),
     submitInput = form[0].querySelector('input[type="submit"]');
 
 function save(event) {
+    let toPrint = true;
     event.preventDefault();
     let formData = new FormData(form[0]);
 
     let employee = new Employee();
-    employee.set_name(formData.get('name'));
+    try {
+        employee.set_name(formData.get('name'));
+    } catch (e) {
+        console.log(e);
+        toPrint = false;
+    }
     employee.set_gender(formData.get('gender'));
     employee.set_salary(formData.get('salary'));
     employee.set_department(formData.get('department'));
-    employee.set_start_date(formData.get('Day') + '-' + formData.get('Month') + '-' + formData.get('Year'));
+    try {
+        employee.set_start_date(formData.get('Year') + '/' + formData.get('Month') + '/' + formData.get('Day'));
+    } catch (e) {
+        console.log(e);
+        toPrint = false;
+    }
     employee.set_notes(formData.get('Notes'));
-    console.log(employee.toString());
-    alert(employee.toString())
+    if (toPrint) {
+        console.log(employee.toString());
+        alert(employee.toString())
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
