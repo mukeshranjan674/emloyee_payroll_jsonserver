@@ -221,3 +221,9 @@ select {
         padding: 1px;
     }
 }
+
+error-output {
+    font-size: 12px;
+    font-style: italic;
+    color: red;
+}
