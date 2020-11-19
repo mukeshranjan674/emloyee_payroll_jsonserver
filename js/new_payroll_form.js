@@ -1,41 +1,3 @@
-
-window.addEventListener('DOMContentLoaded', (event) => {
-    let name = document.querySelector('#name');
-    const textError = document.querySelector('.name-error');
-    name.addEventListener('input', function () {
-        if (name.value.length == 0) {
-            textError.textContent = "";
-            return;
-        }
-        try {
-            (new Employee()).set_name(name.value);
-            textError.textContent = "";
-        } catch (e) {
-            textError.textContent = e;
-        }
-    });
-
-    const salary = document.querySelector('#salary');
-    const output = document.querySelector('.salary-output');
-    output.textContent = salary.value;
-    salary.addEventListener('input', function () {
-        output.textContent = salary.value;
-    });
-
-    let day = document.querySelector('#day');
-    let month = document.querySelector('#month');
-    let year = document.querySelector('#year');
-    const dateError = document.querySelector('.date-error');
-    name.addEventListener('select', function () {
-        try {
-            (new Employee()).set_start_date(year + '/' + month + '/' + day);
-            dateError.textContent = "";
-        } catch (e) {
-            dateError.textContent = e;
-        }
-    });
-});
-
 class Employee {
     name;
     salary;
@@ -98,6 +60,93 @@ class Employee {
     }
 }
 
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    let name = document.querySelector('#name');
+    const textError = document.querySelector('.name-error');
+    name.addEventListener('input', function () {
+        if (name.value.length == 0) {
+            textError.textContent = "";
+            return;
+        }
+        try {
+            (new Employee()).set_name(name.value);
+            textError.textContent = "";
+        } catch (e) {
+            textError.textContent = e;
+        }
+    });
+
+    const salary = document.querySelector('#salary');
+    const output = document.querySelector('.salary-output');
+    output.textContent = salary.value;
+    salary.addEventListener('input', function () {
+        output.textContent = salary.value;
+    });
+
+    let day = document.querySelector('#day');
+    let month = document.querySelector('#month');
+    let year = document.querySelector('#year');
+    const dateError = document.querySelector('.date-error');
+    name.addEventListener('select', function () {
+        try {
+            (new Employee()).set_start_date(year + '/' + month + '/' + day);
+            dateError.textContent = "";
+        } catch (e) {
+            dateError.textContent = e;
+        }
+    });
+
+
+});
+
+// const save = () => {
+//     try {
+//         let employeePayrollData = createEmployeePayroll();
+//     } catch (e) {
+//         return;
+//     }
+// }
+
+// const createEmployeePayroll = () => {
+//     let employee = new Employee();
+//     let toPrint = true;
+//     try {
+//         employee.set_name = document.querySelector('#name').value;
+//     } catch (e) {
+//         console.log(e);
+//         toPrint = false;
+//     }
+
+//     employee.set_gender = document.querySelector('#gender').value;
+//     employee.set_profile = document.querySelector('#profile').value;
+//     employee.set_department = getSelectedValues('[name=department]');
+//     employee.set_salary = document.querySelector('#salary').value;
+//     employee.set_notes = document.querySelector('#notes').value;
+//     try {
+//         employee.set_start_date = document.querySelector('#year') + "/" + document.querySelector('#month') + "/" +
+//         document.querySelector('#day');
+//     } catch (e){
+//         console.log(e);
+//         alert(e);
+//         toPrint = false;
+//     }
+//     console.log(employee.toString());
+//        if (toPrint) {
+//         console.log(employee.toString());
+//         alert(employee.toString())
+//     }
+//     return employee;
+// }
+
+// const getSelectedValues = (propertyValue) => {
+//     let all_items = document.querySelector(propertyValue);
+//     let selected_items = [];
+//     all_items.forEach(item => {
+//         if(item.checked) selected_items.push(item.value);
+//     });
+//     return selected_items;
+// };
 
 const employee_data = document.querySelector('.form-content'),
     form = employee_data.querySelectorAll('.form'),
