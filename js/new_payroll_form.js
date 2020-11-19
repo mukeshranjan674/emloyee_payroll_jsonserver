@@ -1,23 +1,40 @@
-const salary = document.querySelector('#salary');
-const output = document.querySelector('.salary-output');
-output.textContent = salary.value;
-salary.addEventListener('input', function () {
-    output.textContent = salary.value;
-});
 
-try {
+window.addEventListener('DOMContentLoaded', (event) => {
     let name = document.querySelector('#name');
     const textError = document.querySelector('.name-error');
     name.addEventListener('input', function () {
-        let nameRegex = RegExp('^[A-Z]{1}[a-z]{2,}$');
-        if (nameRegex.test(name.value))
+        if (name.value.length == 0) {
             textError.textContent = "";
-        else
-            textError.textContent = "Name is Incorrect";
+            return;
+        }
+        try {
+            (new Employee()).set_name(name.value);
+            textError.textContent = "";
+        } catch (e) {
+            textError.textContent = e;
+        }
     });
-} catch (e) {
-    console.error(e);
-}
+
+    const salary = document.querySelector('#salary');
+    const output = document.querySelector('.salary-output');
+    output.textContent = salary.value;
+    salary.addEventListener('input', function () {
+        output.textContent = salary.value;
+    });
+
+    let day = document.querySelector('#day');
+    let month = document.querySelector('#month');
+    let year = document.querySelector('#year');
+    const dateError = document.querySelector('.date-error');
+    name.addEventListener('select', function () {
+        try {
+            (new Employee()).set_start_date(year + '/' + month + '/' + day);
+            dateError.textContent = "";
+        } catch (e) {
+            dateError.textContent = e;
+        }
+    });
+});
 
 class Employee {
     name;
@@ -92,13 +109,7 @@ function save(event) {
     let formData = new FormData(form[0]);
 
     let employee = new Employee();
-    try {
-        employee.set_name(formData.get('name'));
-    } catch (e) {
-        console.log(e);
-        toPrint = false;
-    }
-
+    employee.set_name(formData.get('name'));
     employee.set_profile(formData.get('profile'));
     employee.set_gender(formData.get('gender'));
     employee.set_salary(formData.get('salary'));
@@ -107,6 +118,7 @@ function save(event) {
         employee.set_start_date(formData.get('Year') + '/' + formData.get('Month') + '/' + formData.get('Day'));
     } catch (e) {
         console.log(e);
+        alert(e);
         toPrint = false;
     }
 
