@@ -26,18 +26,7 @@ class Employee {
     department;
     start_date;
     notes;
-
-    constructor(name, salary, gender, department, start_date, notes) {
-        this.name = name;
-        this.salary = salary;
-        this.department = department;
-        this.start_date = start_date;
-        this.notes = notes;
-    }
-
-    set_department(department) {
-        this.department = department;
-    }
+    profilePic;
 
     set_start_date(start_date) {
         let date = new Date(start_date);
@@ -80,11 +69,15 @@ class Employee {
         this.department = department;
     }
 
+    set_profile(profile) {
+        this.profilePic = profile;
+    }
 
     toString() {
-        return "[name = " + this.name + ", gender = " + this.gender + ", salary = " + this.salary +
-            ", department = " + this.department + ", start_date = " + this.start_date + ", notes = " +
-            this.notes + "]";
+        return "name= " + this.name + ", gender= " + this.gender +
+            ", profile pic=  " + this.profilePic + ", department= " + this.department +
+            ", salary= " + this.salary + ", startDate= " + this.start_date + ", notes= " +
+            this.notes;
     }
 }
 
@@ -105,6 +98,8 @@ function save(event) {
         console.log(e);
         toPrint = false;
     }
+
+    employee.set_profile(formData.get('profile'));
     employee.set_gender(formData.get('gender'));
     employee.set_salary(formData.get('salary'));
     employee.set_department(formData.get('department'));
@@ -116,15 +111,16 @@ function save(event) {
     }
 
     var checkboxes = document.getElementsByName('department');
-    var vals = "";
+    var departments = "";
     for (var i = 0, n = checkboxes.length; i < n; i++) {
         if (checkboxes[i].checked) {
-            vals += "," + checkboxes[i].value;
+            departments += "," + checkboxes[i].value;
         }
     }
-    if (vals) vals = vals.substring(1);
-    employee.set_department(vals);
+    if (departments) departments = departments.substring(1);
+    employee.set_department(departments);
     employee.set_notes(formData.get('Notes'));
+
     if (toPrint) {
         console.log(employee.toString());
         alert(employee.toString())
