@@ -114,6 +114,16 @@ function save(event) {
         console.log(e);
         toPrint = false;
     }
+
+    var checkboxes = document.getElementsByName('department');
+    var vals = "";
+    for (var i = 0, n = checkboxes.length; i < n; i++) {
+        if (checkboxes[i].checked) {
+            vals += "," + checkboxes[i].value;
+        }
+    }
+    if (vals) vals = vals.substring(1);
+    employee.set_department(vals);
     employee.set_notes(formData.get('Notes'));
     if (toPrint) {
         console.log(employee.toString());
