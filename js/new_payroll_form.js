@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function createAndUpdateStorage(employee) {
     let employee_list = JSON.parse(localStorage.getItem("Employee_List"));
-    if(employee_list != undefined) {
+    if (employee_list != undefined) {
         employee_list.push(employee);
     }
     else {
@@ -155,4 +155,33 @@ function createAndUpdateStorage(employee) {
     }
     alert(employee.toString());
     localStorage.setItem("Employee_List", JSON.stringify(employee_list));
+}
+
+const resetForm = () => {
+    setValue('#name', '');
+    unsetSelectedValues('[name=profile]');
+    unsetSelectedValues('[name=gender]');
+    unsetSelectedValues('[name=department]');
+    setValue('#salary', '');
+    setValue('#notes', '');
+    setValue('#day', '1');
+    setValue('#month', 'January');
+    setValue('#year', '2020');
+}
+
+const unsetSelectedValues = (propertyValue) => {
+    let all_items = document.querySelectorAll(propertyValue);
+    all_items.forEach(item => {
+        item.checked = false;
+    });
+};
+
+const setTextValue = (id, value) => {
+    const element = document.querySelector(id);
+    element.textContent = value;
+}
+
+const setValue = (id, value) => {
+    const element = document.querySelector(id);
+    element.value = value;
 }
