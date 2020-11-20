@@ -1,16 +1,23 @@
+let employee_payroll_list;
 window.addEventListener('DOMContentLoaded', (event) => {
+    employee_payroll_list = get_employee_payroll_from_storage();
+    document.querySelector(".emp-count").textContent = employee_payroll_list.length;
     createInnerHtml();
 });
+
+const get_employee_payroll_from_storage = () => {
+    return localStorage.getItem('Employee_List') ?
+                        JSON.parse(localStorage.getItem('Employee_List')) : [];
+}
 
 const createInnerHtml = () => {
     const headerHtml = "<th></th><th>Name</th><th>Gender</th><th>Department</th>" +
                        "<th>Salary</th><th>Start Date</th><th>Actions</th>";
     let innerHtml = `${headerHtml}`;
-    let employee_payroll_list = create_employee_payroll_json();
     for (employee_payroll_data of employee_payroll_list){
         innerHtml = `${innerHtml}
             <tr>
-                <td><img src="${employee_payroll_data.profile_pic}" alt="" class="profile">
+                <td><img src="${employee_payroll_data.profilePic}" alt="" class="profile">
                 </td>
                 <td>${employee_payroll_data.name}</td>
                 <td>${employee_payroll_data.gender}</td>
@@ -27,35 +34,35 @@ const createInnerHtml = () => {
     document.querySelector('#display').innerHTML = innerHtml;
 }
 
-const create_employee_payroll_json = () => {
-    let employee_payroll_list_local = [
-        {
-            name: 'Mukesh Ranjan',
-            gender: 'male',
-            department: [
-                'Engineering','Finance'
-            ],
-            salary: '500000',
-            start_date: '29 Oct 2020',
-            note: '',
-            id: new Date().getTime(),
-            profile_pic: '../assets/profile-images/Ellipse -2.png'
-        },
-        {
-            name: 'Nobita',
-            gender: 'male',
-            department: [
-                'Sales','Finance'
-            ],
-            salary: '500000',
-            start_date: '29 Oct 2020',
-            note: '',
-            id: new Date().getTime(),
-            profile_pic: '../assets/profile-images/Ellipse -3.png'
-        }
-    ];
-    return employee_payroll_list_local;
-};
+// const create_employee_payroll_json = () => {
+//     let employee_payroll_list_local = [
+//         {
+//             name: 'Mukesh Ranjan',
+//             gender: 'male',
+//             department: [
+//                 'Engineering','Finance'
+//             ],
+//             salary: '500000',
+//             start_date: '29 Oct 2020',
+//             note: '',
+//             id: new Date().getTime(),
+//             profile_pic: '../assets/profile-images/Ellipse -2.png'
+//         },
+//         {
+//             name: 'Nobita',
+//             gender: 'male',
+//             department: [
+//                 'Sales','Finance'
+//             ],
+//             salary: '500000',
+//             start_date: '29 Oct 2020',
+//             note: '',
+//             id: new Date().getTime(),
+//             profile_pic: '../assets/profile-images/Ellipse -3.png'
+//         }
+//     ];
+//     return employee_payroll_list_local;
+// };
 
 const get_department_html = (department_list) => {
     let department_html = '';

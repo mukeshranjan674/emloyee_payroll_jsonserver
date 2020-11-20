@@ -60,6 +60,7 @@ class Employee {
     }
 }
 
+// DOM Content Loaded
 
 window.addEventListener('DOMContentLoaded', (event) => {
     let name = document.querySelector('#name');
@@ -77,12 +78,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
+    // Salary dispay
+
     const salary = document.querySelector('#salary');
     const output = document.querySelector('.salary-output');
     output.textContent = salary.value;
     salary.addEventListener('input', function () {
         output.textContent = salary.value;
     });
+
+    // Date display
 
     let day = document.querySelector('#day');
     let month = document.querySelector('#month');
@@ -99,6 +104,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
 });
+
+// Submit
 
 const employee_data = document.querySelector('.form-content'),
     form = employee_data.querySelectorAll('.form'),
@@ -122,21 +129,11 @@ function save(event) {
         alert(e);
         toPrint = false;
     }
-
-    var checkboxes = document.getElementsByName('department');
-    var departments = "";
-    for (var i = 0, n = checkboxes.length; i < n; i++) {
-        if (checkboxes[i].checked) {
-            departments += "," + checkboxes[i].value;
-        }
-    }
-    if (departments) departments = departments.substring(1);
-    employee.set_department(departments);
+    employee.set_department(getSelectedValues('department'));
     employee.set_notes(formData.get('Notes'));
 
     if (toPrint) {
         console.log(employee.toString());
-        // alert(employee.toString())
         createAndUpdateStorage(employee);
     }
 }
@@ -144,6 +141,21 @@ function save(event) {
 document.addEventListener('DOMContentLoaded', function () {
     submitInput.addEventListener('click', save, false);
 }, false);
+
+
+// Get Selected values
+
+const getSelectedValues = (propertyValue) => {
+    let all_items = document.getElementsByName(propertyValue);
+    let selected_items = [];
+    all_items.forEach(item => {
+        if (item.checked) selected_items.push(item.value);
+    });
+    return selected_items;
+};
+
+
+// Create and Update Local Storage
 
 function createAndUpdateStorage(employee) {
     let employee_list = JSON.parse(localStorage.getItem("Employee_List"));
@@ -153,9 +165,12 @@ function createAndUpdateStorage(employee) {
     else {
         employee_list = [employee];
     }
-    alert(employee.toString());
+    alert("Employee Added !! \n\n" + employee.toString());
     localStorage.setItem("Employee_List", JSON.stringify(employee_list));
 }
+
+
+// Reset Form
 
 const resetForm = () => {
     setValue('#name', '');
