@@ -6,6 +6,7 @@ class Employee {
     start_date;
     notes;
     profilePic;
+    id;
 
     set_start_date(start_date) {
         let date = new Date(start_date);
@@ -50,6 +51,10 @@ class Employee {
 
     set_profile(profile) {
         this.profilePic = profile;
+    }
+
+    set_id(id) {
+        this.id = id;
     }
 
     toString() {
@@ -112,6 +117,7 @@ const employee_data = document.querySelector('.form-content'),
     submitInput = form[0].querySelector('input[type="submit"]');
 
 function save(event) {
+    
     let toPrint = true;
     event.preventDefault();
     let formData = new FormData(form[0]);
@@ -131,6 +137,7 @@ function save(event) {
     }
     employee.set_department(getSelectedValues('department'));
     employee.set_notes(formData.get('Notes'));
+    employee.set_id(getId());
 
     if (toPrint) {
         console.log(employee.toString());
@@ -142,6 +149,16 @@ document.addEventListener('DOMContentLoaded', function () {
     submitInput.addEventListener('click', save, false);
 }, false);
 
+function getId(){
+    let employee_list = JSON.parse(localStorage.getItem("Employee_List"));
+    if(employee_list){
+        return employee_list.length + 1;
+    }
+    else {
+        return 1;
+    }
+    
+}
 
 // Get Selected values
 
