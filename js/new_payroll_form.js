@@ -98,14 +98,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
     let month = document.querySelector('#month');
     let year = document.querySelector('#year');
     const dateError = document.querySelector('.date-error');
-    name.addEventListener('select', function () {
+    day.addEventListener('click', checkDate);
+    month.addEventListener('click', checkDate);
+    year.addEventListener('click', checkDate);
+    let date = new Date(year + '/' + month + '/' + day);
+    function checkDate() {
+        console.log("adadfa");
         try {
-            (new Employee()).set_start_date(year + '/' + month + '/' + day);
+            (new Employee()).set_start_date(year.value + '/' + month.value + '/' + day.value);
             dateError.textContent = "";
         } catch (e) {
             dateError.textContent = e;
         }
-    });
+    }
 
 
 });
@@ -128,13 +133,7 @@ function save(event) {
     employee.set_gender(formData.get('gender'));
     employee.set_salary(formData.get('salary'));
     employee.set_department(formData.get('department'));
-    try {
-        employee.set_start_date(formData.get('Year') + '/' + formData.get('Month') + '/' + formData.get('Day'));
-    } catch (e) {
-        console.log(e);
-        alert(e);
-        toPrint = false;
-    }
+    employee.set_start_date(formData.get('Year') + '/' + formData.get('Month') + '/' + formData.get('Day'));
     employee.set_department(getSelectedValues('department'));
     employee.set_notes(formData.get('Notes'));
     employee.set_id(getId());
