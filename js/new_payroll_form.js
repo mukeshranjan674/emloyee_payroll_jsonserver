@@ -67,6 +67,9 @@ class Employee {
 
 // DOM Content Loaded
 
+let isUpdate = false;
+let employee_payroll_object = {};
+
 window.addEventListener('DOMContentLoaded', (event) => {
     let name = document.querySelector('#name');
     const textError = document.querySelector('.name-error');
@@ -112,8 +115,45 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
+    checkForUpdate();
 
 });
+
+const checkForUpdate = () => {
+    const employeePayrollJson = localStorage.getItem('editEmp');
+    isUpdate = employeePayrollJson ? true : false;
+    if(!isUpdate) return;
+    employee_payroll_object = JSON.parse(employeePayrollJson);
+    setForm();
+}
+
+const setForm = () => {
+    setValue('#name', employee_payroll_object.name);
+    setSelectedValues('[name=profile]', employee_payroll_object.profilePic);
+    setSelectedValues('[name=gender]', employee_payroll_object.gender);
+    setSelectedValues('[name=department]', employee_payroll_object.department);
+    setValue('#salary', employee_payroll_object.salary);
+    setTextValue('.salary-output', employee_payroll_object.salary);
+    setValue('#notes', employee_payroll_object.notes);
+    let date = employee_payroll_object.start_date.split("/");
+    setValue('#day', date[2]);
+    setValue('#month', date[1]);
+    setValue('#year', date[0]);
+}
+
+const setSelectedValues = (propertyValue, value) => {
+    let all_items = document.querySelectorAll(propertyValue);
+    all_items.forEach(item => {
+        if(Array.isArray(value)) {
+            if(value.includes(item.value)) {
+                item.checked = true;
+            }
+        }
+        else if (item.value == value){
+            item.checked = true;
+        }
+    });
+}
 
 // Submit
 
@@ -142,6 +182,7 @@ function save(event) {
         console.log(employee.toString());
         createAndUpdateStorage(employee);
     }
+    resetForm();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -195,9 +236,14 @@ const resetForm = () => {
     unsetSelectedValues('[name=department]');
     setValue('#salary', '');
     setValue('#notes', '');
-    setValue('#day', '1');
-    setValue('#month', 'January');
-    setValue('#year', '2020');
+    setSelectedIndex('#day', 0);
+    setSelectedIndex('#month', 0);
+    setSelectedIndex('#year', 0);
+}
+
+const setSelectedIndex = (id, index) => {
+    const element = document.querySelector(id);
+    element.selectedIndex = index;
 }
 
 const unsetSelectedValues = (propertyValue) => {
