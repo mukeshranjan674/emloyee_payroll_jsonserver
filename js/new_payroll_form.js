@@ -106,7 +106,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     year.addEventListener('click', checkDate);
     let date = new Date(year + '/' + month + '/' + day);
     function checkDate() {
-        console.log("adadfa");
         try {
             (new Employee()).set_start_date(year.value + '/' + month.value + '/' + day.value);
             dateError.textContent = "";
@@ -122,7 +121,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 const checkForUpdate = () => {
     const employeePayrollJson = localStorage.getItem('editEmp');
     isUpdate = employeePayrollJson ? true : false;
-    if(!isUpdate) return;
+    if (!isUpdate) return;
     employee_payroll_object = JSON.parse(employeePayrollJson);
     setForm();
 }
@@ -144,12 +143,12 @@ const setForm = () => {
 const setSelectedValues = (propertyValue, value) => {
     let all_items = document.querySelectorAll(propertyValue);
     all_items.forEach(item => {
-        if(Array.isArray(value)) {
-            if(value.includes(item.value)) {
+        if (Array.isArray(value)) {
+            if (value.includes(item.value)) {
                 item.checked = true;
             }
         }
-        else if (item.value == value){
+        else if (item.value == value) {
             item.checked = true;
         }
     });
@@ -162,9 +161,10 @@ const employee_data = document.querySelector('.form-content'),
     submitInput = form[0].querySelector('input[type="submit"]');
 
 function save(event) {
-    
+
     let toPrint = true;
     event.preventDefault();
+    event.stopPropagation();
     let formData = new FormData(form[0]);
 
     let employee = new Employee();
@@ -176,28 +176,30 @@ function save(event) {
     employee.set_start_date(formData.get('Year') + '/' + formData.get('Month') + '/' + formData.get('Day'));
     employee.set_department(getSelectedValues('department'));
     employee.set_notes(formData.get('Notes'));
-    employee.set_id(getId());
+    if (!isUpdate) {
+        employee.set_id(getId());
+    }
 
     if (toPrint) {
         console.log(employee.toString());
         createAndUpdateStorage(employee);
     }
-    resetForm();
+    window.location.replace(site_properties.home_page);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     submitInput.addEventListener('click', save, false);
 }, false);
 
-function getId(){
+function getId() {
     let employee_list = JSON.parse(localStorage.getItem("Employee_List"));
-    if(employee_list){
+    if (employee_list) {
         return employee_list.length + 1;
     }
     else {
         return 1;
     }
-    
+
 }
 
 // Get Selected values
@@ -216,14 +218,28 @@ const getSelectedValues = (propertyValue) => {
 
 function createAndUpdateStorage(employee) {
     let employee_list = JSON.parse(localStorage.getItem("Employee_List"));
-    if (employee_list != undefined) {
-        employee_list.push(employee);
+    if (employee.id != undefined) {
+        if (employee_list != undefined) {
+            employee_list.push(employee);
+        }
+        else {
+            employee_list = [employee];
+        }
+        alert("Employee Added !! \n\n" + employee.toString());
+        localStorage.setItem("Employee_List", JSON.stringify(employee_list));
     }
     else {
-        employee_list = [employee];
+        employee.id = employee_payroll_object.id;
+        let employee_payroll_data = employee_list.find(employee_data => employee_data.id == employee.id);
+        const index = employee_list
+            .map(employee_data => employee_data.id)
+            .indexOf(employee_payroll_data.id);
+        employee_list.splice(index, 1, employee);
+        alert("Employee Updated !! \n\n" + employee.toString());
+        localStorage.setItem("Employee_List", JSON.stringify(employee_list));
     }
-    alert("Employee Added !! \n\n" + employee.toString());
-    localStorage.setItem("Employee_List", JSON.stringify(employee_list));
+
+
 }
 
 

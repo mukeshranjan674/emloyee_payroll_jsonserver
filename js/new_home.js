@@ -3,18 +3,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
     employee_payroll_list = get_employee_payroll_from_storage();
     document.querySelector(".emp-count").textContent = employee_payroll_list.length;
     createInnerHtml();
+    localStorage.removeItem('editEmp');
 });
 
 const get_employee_payroll_from_storage = () => {
     return localStorage.getItem('Employee_List') ?
-                        JSON.parse(localStorage.getItem('Employee_List')) : [];
+        JSON.parse(localStorage.getItem('Employee_List')) : [];
 }
 
 const createInnerHtml = () => {
     const headerHtml = "<th></th><th>Name</th><th>Gender</th><th>Department</th>" +
-                       "<th>Salary</th><th>Start Date</th><th>Actions</th>";
+        "<th>Salary</th><th>Start Date</th><th>Actions</th>";
     let innerHtml = `${headerHtml}`;
-    for (employee_payroll_data of employee_payroll_list){
+    for (employee_payroll_data of employee_payroll_list) {
         innerHtml = `${innerHtml}
             <tr>
                 <td><img src="${employee_payroll_data.profilePic}" alt="" class="profile">
@@ -47,10 +48,10 @@ const get_department_html = (department_list) => {
 
 const remove = (node) => {
     let employee_payroll_data = employee_payroll_list.find(employee_data => employee_data.id == node.id);
-    if(!employee_payroll_data) return;
+    if (!employee_payroll_data) return;
     const index = employee_payroll_list
-                  .map(employee_data => employee_data.id)
-                  .indexOf(employee_payroll_data.id);
+        .map(employee_data => employee_data.id)
+        .indexOf(employee_payroll_data.id);
     employee_payroll_list.splice(index, 1);
     localStorage.setItem("Employee_List", JSON.stringify(employee_payroll_list));
     document.querySelector(".emp-count").textContent = employee_payroll_list.length;
@@ -62,7 +63,7 @@ const remove = (node) => {
 
 const update = (node) => {
     let employee_payroll_data = employee_payroll_list.find(employee_data => employee_data.id == node.id);
-    if(!employee_payroll_data) return;
+    if (!employee_payroll_data) return;
     localStorage.setItem('editEmp', JSON.stringify(employee_payroll_data));
     window.location.replace(site_properties.add_employee_page);
 }
